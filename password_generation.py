@@ -12,7 +12,7 @@ def char_list_gen():
     separated_characters = ""
     for i in range(33,123):
         characters += chr(i)
-    for char in "`.,?-_[]{}<>()|'\"\\/":
+    for char in "`.,-_[]{}<>()|'\"\\/":
         characters = characters.replace(char, '')
     for char in characters:
         char += ' '
@@ -126,10 +126,10 @@ def main(length):
 
     # Generate character list and corresponding 2D array
     character_list = char_list_gen()
-    keyboard_matrix = np.array([[['1','!'], ['2','@'], ['3','#'], ['4','$'], ['5','%'], ['6','^'], ['7','&'], ['8','*'], ['9','?'], ['0','?'], ['?','?'], ['=','+']],
-                 [['q','Q'], ['w','W'], ['e','E'], ['r','R'], ['t','T'], ['y','Y'], ['u','U'], ['i','I'], ['o','O'], ['p','P'], ['?','?'], ['?','?']],
-                 [['a','A'], ['s','S'], ['d','D'], ['f','F'], ['g','G'], ['h','H'], ['j','J'], ['k','K'], ['l','L'], [';',':'], ['?','?'], ['?','?']],
-                 [['z','Z'], ['x','X'], ['c','C'], ['v','V'], ['b','B'], ['n','N'], ['m','M'], ['?','?'], ['?','?'], ['?','?'], ['?','?'], ['?','?']]])
+    keyboard_matrix = np.array([[['1','!'], ['2','@'], ['3','#'], ['4','$'], ['5','%'], ['6','^'], ['7','&'], ['8','*'], ['9','('], ['0',')'], ['-','_'], ['=','+']],
+                 [['q','Q'], ['w','W'], ['e','E'], ['r','R'], ['t','T'], ['y','Y'], ['u','U'], ['i','I'], ['o','O'], ['p','P'], ['[','{'], [']','}']],
+                 [['a','A'], ['s','S'], ['d','D'], ['f','F'], ['g','G'], ['h','H'], ['j','J'], ['k','K'], ['l','L'], [';',':'], ['\'','"'], ['\\','|']],
+                 [['z','Z'], ['x','X'], ['c','C'], ['v','V'], ['b','B'], ['n','N'], ['m','M'], [',','<'], ['.','>'], ['?','/'], ['|','|'], ['|','|']]])
 
     # Create dataframe with Manhattan distances between all possible characters
     character_distance_df = make_matrix(character_list, keyboard_matrix)
