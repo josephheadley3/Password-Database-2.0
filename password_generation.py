@@ -107,6 +107,17 @@ def generate_random_password(sequence):
         password += current_character
     return password
 
+def password_length_input():
+    while True:
+        try:
+            length = int(input("Enter desired password length (Between 8 and 40 characters): "))
+            if length < 8 or length > 40:
+                print("Password length must be between 8 and 40 characters. Please try again.")
+            else:
+                return length
+        except ValueError:
+            print("Invalid input. Please enter a valid integer for password length.")
+
 ### Main Code ###
 
 def main(length):
@@ -133,5 +144,5 @@ def main(length):
     return generate_random_password(generate_character_type_sequence(length))
 
 if __name__ == "__main__":
-    print(main(12))  # Example usage: generate a random password of length 12
+    print(main(password_length_input())) 
 
