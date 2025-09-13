@@ -133,7 +133,7 @@ def character_concentration_input():
 
 ### Main Code ###
 
-def main(length):
+def main(length, concentration = 'standard'):
     global character_info_df
     global character_type_df
 
@@ -154,7 +154,7 @@ def main(length):
     character_info_df = character_distance_df.merge(character_type_df, left_on='End Character', right_on='Character', how='left')
 
     # Generate random password of selected length
-    return generate_random_password(generate_character_type_sequence(length), character_concentration_input())
+    return generate_random_password(generate_character_type_sequence(length), concentration)
 
 if __name__ == "__main__":
-    print(main(password_length_input()))
+    print(main(password_length_input(), character_concentration_input()))
