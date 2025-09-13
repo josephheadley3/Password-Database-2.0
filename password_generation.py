@@ -82,13 +82,18 @@ def generate_character_type_sequence(character_length):
     return sequence
 
 # Function to calculate the probability of selecting a possible Manhattan distance between available characters in an altered skew normal distribution
-def pdf(x, location, scale):
-    return 0.4*m.exp(-((x-location)**2)/(2*scale**2))/scale if x == 0 or x > 6 else 0.8*m.exp(-((x-location)**2)/(2*scale**2))/scale + 0.053*m.exp(-((x-location)**2)/(2*scale**2))/scale
+def pdf(x, location, scale, concentration = 'standard'):
+    if concentration in ['standard', 'st']:
+        return 0.8*m.exp(-((x-location)**2)/(2*scale**2))/scale if x == 0 or x > 6 else 0.8*m.exp(-((x-location)**2)/(2*scale**2))/scale
+    elif concentration in ['dense', 'de']:
+        return 0.4*m.exp(-((x-location)**2)/(2*scale**2))/scale if x > 6 else (0.8*m.exp(-((x-location)**2)/(2*scale**2))/scale if x == 0 else 1.2*m.exp(-((x-location)**2)/(2*scale**2))/scale)
+    elif concentration in ['sparse', 'sp']:
+        return 1.5*m.exp(-((x-location)**2)/(2*scale**2))/scale if x > 6 else 0.4*m.exp(-((x-location)**2)/(2*scale**2))/scale 
 
 # Function to generate a random password that follows a given sequence of character types
-def generate_random_password(sequence):
+def generate_random_password(sequence, concentration = 'standard'):
     password = ""
-    probability_distribution = [pdf(i, 1, 7) for i in range(0, 15)]
+    probability_distribution = [pdf(i, 1, 7, concentration) for i in range(0, 15)]
     current_chartype = sequence[0]
     current_character = np.random.choice(character_type_df[character_type_df['Character Type'] == current_chartype]['Character'])
     password += current_character
@@ -118,9 +123,17 @@ def password_length_input():
         except ValueError:
             print("Invalid input. Please enter a valid integer for password length.")
 
+def character_concentration_input():
+    while True:
+        concentration = input("Enter desired character concentration (standard, dense, sparse): ").lower()
+        if concentration not in ['standard', 'st', 'dense', 'de', 'sparse', 'sp']:
+            print("Invalid input. Please enter 'standard', 'dense', 'sparse' or their abbreviations.")
+        else:
+            return concentration
+
 ### Main Code ###
 
-def main(length):
+def main(length, concentration = 'standard'):
     global character_info_df
     global character_type_df
 
@@ -141,8 +154,7 @@ def main(length):
     character_info_df = character_distance_df.merge(character_type_df, left_on='End Character', right_on='Character', how='left')
 
     # Generate random password of selected length
-    return generate_random_password(generate_character_type_sequence(length))
+    return generate_random_password(generate_character_type_sequence(length), concentration)
 
 if __name__ == "__main__":
-    print(main(password_length_input())) 
-
+    print(main(password_length_input(), character_concentration_input()))
